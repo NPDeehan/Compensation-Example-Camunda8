@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="f21c83d" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0" camunda:diagramRelationId="203800ac-7cd5-41a9-9ca9-e7bebf6db476">
+  <bpmn:process id="HawkAdoptionProcess" name="Hawk Adoption (Compensation)" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Hawk Adoption Process">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formId="hawk-adoption-process-08don9x" />
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0vlmacn</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:inclusiveGateway id="Gateway_1s66v97">
+      <bpmn:incoming>Flow_0vlmacn</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ts7y8f</bpmn:outgoing>
+      <bpmn:outgoing>Flow_18wmfjj</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0vlmacn" sourceRef="StartEvent_1" targetRef="Gateway_1s66v97" />
+    <bpmn:sequenceFlow id="Flow_0ts7y8f" name="If on Slack" sourceRef="Gateway_1s66v97" targetRef="Activity_0zf1sia">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isPartOfAdoptionChannel</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_18wmfjj" name="Always" sourceRef="Gateway_1s66v97" targetRef="Activity_0uygb1f">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1621vco" name="Approved?">
+      <bpmn:incoming>Flow_1gh2ep2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1u5eolu</bpmn:outgoing>
+      <bpmn:outgoing>Flow_046xsg5</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1gh2ep2" sourceRef="Activity_0dw4bu5" targetRef="Gateway_1621vco" />
+    <bpmn:sequenceFlow id="Flow_1u5eolu" name="Yes" sourceRef="Gateway_1621vco" targetRef="Activity_0zqojnz">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=adoptionApproved = "yes"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_046xsg5" name="No" sourceRef="Gateway_1621vco" targetRef="Event_1bty8rb">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=adoptionApproved = "no"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_18pz5wv" name="Hawk Adoption Complete">
+      <bpmn:incoming>Flow_14k3te4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_14k3te4" sourceRef="Activity_0zqojnz" targetRef="Event_18pz5wv" />
+    <bpmn:serviceTask id="Activity_0zf1sia" name="Slack Message" zeebe:modelerTemplate="io.camunda.connectors.Slack.v1" zeebe:modelerTemplateVersion="3" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI3IiBoZWlnaHQ9IjEyNyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cGF0aCBkPSJNMjcuMiA4MGMwIDcuMy01LjkgMTMuMi0xMy4yIDEzLjJDNi43IDkzLjIuOCA4Ny4zLjggODBjMC03LjMgNS45LTEzLjIgMTMuMi0xMy4yaDEzLjJWODB6bTYuNiAwYzAtNy4zIDUuOS0xMy4yIDEzLjItMTMuMiA3LjMgMCAxMy4yIDUuOSAxMy4yIDEzLjJ2MzNjMCA3LjMtNS45IDEzLjItMTMuMiAxMy4yLTcuMyAwLTEzLjItNS45LTEzLjItMTMuMlY4MHoiIGZpbGw9IiNFMDFFNUEiLz4KICA8cGF0aCBkPSJNNDcgMjdjLTcuMyAwLTEzLjItNS45LTEzLjItMTMuMkMzMy44IDYuNSAzOS43LjYgNDcgLjZjNy4zIDAgMTMuMiA1LjkgMTMuMiAxMy4yVjI3SDQ3em0wIDYuN2M3LjMgMCAxMy4yIDUuOSAxMy4yIDEzLjIgMCA3LjMtNS45IDEzLjItMTMuMiAxMy4ySDEzLjlDNi42IDYwLjEuNyA1NC4yLjcgNDYuOWMwLTcuMyA1LjktMTMuMiAxMy4yLTEzLjJINDd6IiBmaWxsPSIjMzZDNUYwIi8+CiAgPHBhdGggZD0iTTk5LjkgNDYuOWMwLTcuMyA1LjktMTMuMiAxMy4yLTEzLjIgNy4zIDAgMTMuMiA1LjkgMTMuMiAxMy4yIDAgNy4zLTUuOSAxMy4yLTEzLjIgMTMuMkg5OS45VjQ2Ljl6bS02LjYgMGMwIDcuMy01LjkgMTMuMi0xMy4yIDEzLjItNy4zIDAtMTMuMi01LjktMTMuMi0xMy4yVjEzLjhDNjYuOSA2LjUgNzIuOC42IDgwLjEuNmM3LjMgMCAxMy4yIDUuOSAxMy4yIDEzLjJ2MzMuMXoiIGZpbGw9IiMyRUI2N0QiLz4KICA8cGF0aCBkPSJNODAuMSA5OS44YzcuMyAwIDEzLjIgNS45IDEzLjIgMTMuMiAwIDcuMy01LjkgMTMuMi0xMy4yIDEzLjItNy4zIDAtMTMuMi01LjktMTMuMi0xMy4yVjk5LjhoMTMuMnptMC02LjZjLTcuMyAwLTEzLjItNS45LTEzLjItMTMuMiAwLTcuMyA1LjktMTMuMiAxMy4yLTEzLjJoMzMuMWM3LjMgMCAxMy4yIDUuOSAxMy4yIDEzLjIgMCA3LjMtNS45IDEzLjItMTMuMiAxMy4ySDgwLjF6IiBmaWxsPSIjRUNCMjJFIi8+Cjwvc3ZnPgo=">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:slack:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="{{secrets.Slack}}" target="token" />
+          <zeebe:input source="chat.postMessage" target="method" />
+          <zeebe:input source="plainText" target="data.messageType" />
+          <zeebe:input source="=&#34;Guess what &#34;+ fullName + &#34; wants to adopt a Hawk. Because &#34; +reasonsForAdoption" target="data.text" />
+          <zeebe:input source="#hawk-adoption" target="data.channel" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ts7y8f</bpmn:incoming>
+      <bpmn:outgoing>Flow_1brq38x</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0uygb1f" name="Send Email" zeebe:modelerTemplate="io.camunda.connectors.SendGrid.v2" zeebe:modelerTemplateVersion="3" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0wLjI4NTcwNiA1LjQwODQ3SDUuNDM4MzdWMTAuNTYxMUgwLjI4NTcwNlY1LjQwODQ3WiIgZmlsbD0id2hpdGUiLz4KICAgIDxwYXRoIGQ9Ik0wLjI4NTcwNiA1LjQwODQ3SDUuNDM4MzdWMTAuNTYxMUgwLjI4NTcwNlY1LjQwODQ3WiIgZmlsbD0iIzk5RTFGNCIvPgogICAgPHBhdGggZD0iTTUuNDM4MzcgMTAuNTYxMUwxMC41NjExIDEwLjU2MTZWMTUuNjg0NEg1LjQzODM3VjEwLjU2MTFaIiBmaWxsPSJ3aGl0ZSIvPgogICAgPHBhdGggZD0iTTUuNDM4MzcgMTAuNTYxMUwxMC41NjExIDEwLjU2MTZWMTUuNjg0NEg1LjQzODM3VjEwLjU2MTFaIiBmaWxsPSIjOTlFMUY0Ii8+CiAgICA8cGF0aCBkPSJNMC4yODU3MDYgMTUuNjg0Nkw1LjQzODM3IDE1LjY4NDRWMTUuNzE0M0gwLjI4NTcwNlYxNS42ODQ2Wk0wLjI4NTcwNiAxMC41NjE5SDUuNDM4MzdWMTUuNjg0NEwwLjI4NTcwNiAxNS42ODQ2VjEwLjU2MTlaIiBmaWxsPSIjMUE4MkUyIi8+CiAgICA8cGF0aCBkPSJNNS40MzgzNyAwLjI4NTcwNkgxMC41NjExVjUuNDA4NDdINS40MzgzN1YwLjI4NTcwNlpNMTAuNTYxNiA1LjQzODM3SDE1LjcxNDNWMTAuNTYxMUgxMC41NjE2VjUuNDM4MzdaIiBmaWxsPSIjMDBCM0UzIi8+CiAgICA8cGF0aCBkPSJNNS40MzgzNyAxMC41NjExTDEwLjU2MTEgMTAuNTYxNlY1LjQwODQ3SDUuNDM4MzdWMTAuNTYxMVoiIGZpbGw9IiMwMDlERDkiLz4KICAgIDxwYXRoIGQ9Ik0xMC41NjExIDAuMjg1NzA2SDE1LjcxNDNWNS40MDg0N0gxMC41NjExVjAuMjg1NzA2WiIgZmlsbD0iIzFBODJFMiIvPgogICAgPHBhdGggZD0iTTEwLjU2MTEgNS40MDg0N0gxNS43MTQzVjUuNDM4MzdIMTAuNTYxNkwxMC41NjExIDUuNDA4NDdaIiBmaWxsPSIjMUE4MkUyIi8+Cjwvc3ZnPg==">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:sendgrid:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="{{secrets.SendGrid}}" target="apiKey" />
+          <zeebe:input source="Niall&#39;s Hawk Emporium" target="from.name" />
+          <zeebe:input source="community@camunda.com" target="from.email" />
+          <zeebe:input source="=fullName" target="to.name" />
+          <zeebe:input source="=email" target="to.email" />
+          <zeebe:input source="mail" target="unMappedFieldNotUseInModel.mailType" />
+          <zeebe:input source="Hawk Adoption" target="content.subject" />
+          <zeebe:input source="text/plain" target="content.type" />
+          <zeebe:input source="=&#34;Thanks &#34;  +fullName + &#34; for applying to adopt a hawk. We&#39;ll let you know if we think you&#39;re a good fit&#34;" target="content.value" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_18wmfjj</bpmn:incoming>
+      <bpmn:outgoing>Flow_18bd6sb</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Activity_0dw4bu5" name="Check Details">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formId="Form_vxdjkdv" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_18bd6sb</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gh2ep2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_18bd6sb" sourceRef="Activity_0uygb1f" targetRef="Activity_0dw4bu5" />
+    <bpmn:endEvent id="Event_0k2lcpq">
+      <bpmn:incoming>Flow_1brq38x</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1brq38x" sourceRef="Activity_0zf1sia" targetRef="Event_0k2lcpq" />
+    <bpmn:endEvent id="Event_1549lkv" name="Hawk Adoption Rejected">
+      <bpmn:incoming>Flow_1qp3269</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition_1vzj8a9" />
+    </bpmn:endEvent>
+    <bpmn:subProcess id="Activity_0zqojnz" name="Adoption Process">
+      <bpmn:incoming>Flow_1u5eolu</bpmn:incoming>
+      <bpmn:outgoing>Flow_14k3te4</bpmn:outgoing>
+      <bpmn:startEvent id="Event_0qqeu1b" name="Adoption">
+        <bpmn:outgoing>Flow_1tmuq37</bpmn:outgoing>
+        <bpmn:dataOutputAssociation id="DataOutputAssociation_0ise1x3">
+          <bpmn:targetRef>DataObjectReference_0hc0a3p</bpmn:targetRef>
+        </bpmn:dataOutputAssociation>
+      </bpmn:startEvent>
+      <bpmn:endEvent id="Event_138wecf" name="Adoption Done">
+        <bpmn:incoming>Flow_1tmuq37</bpmn:incoming>
+        <bpmn:property id="Property_0722ls9" name="__targetRef_placeholder" />
+        <bpmn:dataInputAssociation id="DataInputAssociation_04guo50">
+          <bpmn:sourceRef>DataObjectReference_0hc0a3p</bpmn:sourceRef>
+          <bpmn:targetRef>Property_0722ls9</bpmn:targetRef>
+        </bpmn:dataInputAssociation>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_1tmuq37" sourceRef="Event_0qqeu1b" targetRef="Event_138wecf" />
+      <bpmn:dataObjectReference id="DataObjectReference_0hc0a3p" name="This is just a place holder" dataObjectRef="DataObject_0ktgewm" />
+      <bpmn:dataObject id="DataObject_0ktgewm" />
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="Flow_1qp3269" sourceRef="Event_1bty8rb" targetRef="Event_1549lkv" />
+    <bpmn:intermediateThrowEvent id="Event_1bty8rb">
+      <bpmn:incoming>Flow_046xsg5</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qp3269</bpmn:outgoing>
+      <bpmn:compensateEventDefinition id="CompensateEventDefinition_1bxc9m7" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:serviceTask id="Activity_1v0q4sv" name="Slack Rejection Message" zeebe:modelerTemplate="io.camunda.connectors.Slack.v1" zeebe:modelerTemplateVersion="3" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI3IiBoZWlnaHQ9IjEyNyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cGF0aCBkPSJNMjcuMiA4MGMwIDcuMy01LjkgMTMuMi0xMy4yIDEzLjJDNi43IDkzLjIuOCA4Ny4zLjggODBjMC03LjMgNS45LTEzLjIgMTMuMi0xMy4yaDEzLjJWODB6bTYuNiAwYzAtNy4zIDUuOS0xMy4yIDEzLjItMTMuMiA3LjMgMCAxMy4yIDUuOSAxMy4yIDEzLjJ2MzNjMCA3LjMtNS45IDEzLjItMTMuMiAxMy4yLTcuMyAwLTEzLjItNS45LTEzLjItMTMuMlY4MHoiIGZpbGw9IiNFMDFFNUEiLz4KICA8cGF0aCBkPSJNNDcgMjdjLTcuMyAwLTEzLjItNS45LTEzLjItMTMuMkMzMy44IDYuNSAzOS43LjYgNDcgLjZjNy4zIDAgMTMuMiA1LjkgMTMuMiAxMy4yVjI3SDQ3em0wIDYuN2M3LjMgMCAxMy4yIDUuOSAxMy4yIDEzLjIgMCA3LjMtNS45IDEzLjItMTMuMiAxMy4ySDEzLjlDNi42IDYwLjEuNyA1NC4yLjcgNDYuOWMwLTcuMyA1LjktMTMuMiAxMy4yLTEzLjJINDd6IiBmaWxsPSIjMzZDNUYwIi8+CiAgPHBhdGggZD0iTTk5LjkgNDYuOWMwLTcuMyA1LjktMTMuMiAxMy4yLTEzLjIgNy4zIDAgMTMuMiA1LjkgMTMuMiAxMy4yIDAgNy4zLTUuOSAxMy4yLTEzLjIgMTMuMkg5OS45VjQ2Ljl6bS02LjYgMGMwIDcuMy01LjkgMTMuMi0xMy4yIDEzLjItNy4zIDAtMTMuMi01LjktMTMuMi0xMy4yVjEzLjhDNjYuOSA2LjUgNzIuOC42IDgwLjEuNmM3LjMgMCAxMy4yIDUuOSAxMy4yIDEzLjJ2MzMuMXoiIGZpbGw9IiMyRUI2N0QiLz4KICA8cGF0aCBkPSJNODAuMSA5OS44YzcuMyAwIDEzLjIgNS45IDEzLjIgMTMuMiAwIDcuMy01LjkgMTMuMi0xMy4yIDEzLjItNy4zIDAtMTMuMi01LjktMTMuMi0xMy4yVjk5LjhoMTMuMnptMC02LjZjLTcuMyAwLTEzLjItNS45LTEzLjItMTMuMiAwLTcuMyA1LjktMTMuMiAxMy4yLTEzLjJoMzMuMWM3LjMgMCAxMy4yIDUuOSAxMy4yIDEzLjIgMCA3LjMtNS45IDEzLjItMTMuMiAxMy4ySDgwLjF6IiBmaWxsPSIjRUNCMjJFIi8+Cjwvc3ZnPgo=" isForCompensation="true">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:slack:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="{{secrets.Slack}}" target="token" />
+          <zeebe:input source="chat.postMessage" target="method" />
+          <zeebe:input source="plainText" target="data.messageType" />
+          <zeebe:input source="=&#34;Sorry, &#34;+ fullName + &#34; you cannot get a hawk. Because &#34; + rejectReason" target="data.text" />
+          <zeebe:input source="#hawk-adoption" target="data.channel" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="Event_1qiry00" attachedToRef="Activity_0zf1sia">
+      <bpmn:compensateEventDefinition id="CompensateEventDefinition_03slquq" />
+    </bpmn:boundaryEvent>
+    <bpmn:serviceTask id="Activity_1y1e834" name="Send Rejection Email" zeebe:modelerTemplate="io.camunda.connectors.SendGrid.v2" zeebe:modelerTemplateVersion="3" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0wLjI4NTcwNiA1LjQwODQ3SDUuNDM4MzdWMTAuNTYxMUgwLjI4NTcwNlY1LjQwODQ3WiIgZmlsbD0id2hpdGUiLz4KICAgIDxwYXRoIGQ9Ik0wLjI4NTcwNiA1LjQwODQ3SDUuNDM4MzdWMTAuNTYxMUgwLjI4NTcwNlY1LjQwODQ3WiIgZmlsbD0iIzk5RTFGNCIvPgogICAgPHBhdGggZD0iTTUuNDM4MzcgMTAuNTYxMUwxMC41NjExIDEwLjU2MTZWMTUuNjg0NEg1LjQzODM3VjEwLjU2MTFaIiBmaWxsPSJ3aGl0ZSIvPgogICAgPHBhdGggZD0iTTUuNDM4MzcgMTAuNTYxMUwxMC41NjExIDEwLjU2MTZWMTUuNjg0NEg1LjQzODM3VjEwLjU2MTFaIiBmaWxsPSIjOTlFMUY0Ii8+CiAgICA8cGF0aCBkPSJNMC4yODU3MDYgMTUuNjg0Nkw1LjQzODM3IDE1LjY4NDRWMTUuNzE0M0gwLjI4NTcwNlYxNS42ODQ2Wk0wLjI4NTcwNiAxMC41NjE5SDUuNDM4MzdWMTUuNjg0NEwwLjI4NTcwNiAxNS42ODQ2VjEwLjU2MTlaIiBmaWxsPSIjMUE4MkUyIi8+CiAgICA8cGF0aCBkPSJNNS40MzgzNyAwLjI4NTcwNkgxMC41NjExVjUuNDA4NDdINS40MzgzN1YwLjI4NTcwNlpNMTAuNTYxNiA1LjQzODM3SDE1LjcxNDNWMTAuNTYxMUgxMC41NjE2VjUuNDM4MzdaIiBmaWxsPSIjMDBCM0UzIi8+CiAgICA8cGF0aCBkPSJNNS40MzgzNyAxMC41NjExTDEwLjU2MTEgMTAuNTYxNlY1LjQwODQ3SDUuNDM4MzdWMTAuNTYxMVoiIGZpbGw9IiMwMDlERDkiLz4KICAgIDxwYXRoIGQ9Ik0xMC41NjExIDAuMjg1NzA2SDE1LjcxNDNWNS40MDg0N0gxMC41NjExVjAuMjg1NzA2WiIgZmlsbD0iIzFBODJFMiIvPgogICAgPHBhdGggZD0iTTEwLjU2MTEgNS40MDg0N0gxNS43MTQzVjUuNDM4MzdIMTAuNTYxNkwxMC41NjExIDUuNDA4NDdaIiBmaWxsPSIjMUE4MkUyIi8+Cjwvc3ZnPg==" isForCompensation="true">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:sendgrid:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="{{secrets.SendGrid}}" target="apiKey" />
+          <zeebe:input source="Niall&#39;s Hawk Emporium" target="from.name" />
+          <zeebe:input source="community@camunda.com" target="from.email" />
+          <zeebe:input source="=fullName" target="to.name" />
+          <zeebe:input source="=email" target="to.email" />
+          <zeebe:input source="mail" target="unMappedFieldNotUseInModel.mailType" />
+          <zeebe:input source="Hawk Adoption" target="content.subject" />
+          <zeebe:input source="text/plain" target="content.type" />
+          <zeebe:input source="=&#34;Sorry &#34;  +fullName + &#34; but you get no hawk because &#34; +  rejectReason" target="content.value" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="Event_0nyog5t" attachedToRef="Activity_0uygb1f">
+      <bpmn:compensateEventDefinition id="CompensateEventDefinition_0cttp0i" />
+    </bpmn:boundaryEvent>
+    <bpmn:association id="Association_07xxsyz" associationDirection="One" sourceRef="Event_1qiry00" targetRef="Activity_1v0q4sv" />
+    <bpmn:association id="Association_17ljmyt" associationDirection="One" sourceRef="Event_0nyog5t" targetRef="Activity_1y1e834" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="HawkAdoptionProcess">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="170" y="360" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="151" y="403" width="75" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1s66v97_di" bpmnElement="Gateway_1s66v97">
+        <dc:Bounds x="265" y="353" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1621vco_di" bpmnElement="Gateway_1621vco" isMarkerVisible="true">
+        <dc:Bounds x="735" y="353" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="733" y="323" width="55" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_18pz5wv_di" bpmnElement="Event_18pz5wv">
+        <dc:Bounds x="1052" y="360" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1033" y="403" width="75" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ento65_di" bpmnElement="Activity_0zf1sia">
+        <dc:Bounds x="380" y="230" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19tk7ux_di" bpmnElement="Activity_0uygb1f">
+        <dc:Bounds x="380" y="338" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0l8ll0y_di" bpmnElement="Activity_0dw4bu5">
+        <dc:Bounds x="580" y="338" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0k2lcpq_di" bpmnElement="Event_0k2lcpq">
+        <dc:Bounds x="552" y="252" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1aw475k_di" bpmnElement="Event_1549lkv">
+        <dc:Bounds x="1052" y="472" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1033" y="515" width="75" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1w1pypn_di" bpmnElement="Event_1bty8rb">
+        <dc:Bounds x="912" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0zzo9rf" bpmnElement="Activity_1v0q4sv">
+        <dc:Bounds x="520" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1bkyovb" bpmnElement="Activity_1y1e834">
+        <dc:Bounds x="490" y="490" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0f2q80d_di" bpmnElement="Activity_0zqojnz">
+        <dc:Bounds x="880" y="338" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_07xxsyz_di" bpmnElement="Association_07xxsyz">
+        <di:waypoint x="430" y="212" />
+        <di:waypoint x="430" y="120" />
+        <di:waypoint x="520" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_17ljmyt_di" bpmnElement="Association_17ljmyt">
+        <di:waypoint x="430" y="436" />
+        <di:waypoint x="430" y="530" />
+        <di:waypoint x="490" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0c9y112_di" bpmnElement="Event_1qiry00">
+        <dc:Bounds x="412" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_007jhw4_di" bpmnElement="Event_0nyog5t">
+        <dc:Bounds x="412" y="400" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0vlmacn_di" bpmnElement="Flow_0vlmacn">
+        <di:waypoint x="206" y="378" />
+        <di:waypoint x="265" y="378" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ts7y8f_di" bpmnElement="Flow_0ts7y8f" color:border-color="#212121">
+        <di:waypoint x="290" y="353" />
+        <di:waypoint x="290" y="270" />
+        <di:waypoint x="380" y="270" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="310" y="252" width="52" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18wmfjj_di" bpmnElement="Flow_18wmfjj" color:border-color="#212121">
+        <di:waypoint x="315" y="378" />
+        <di:waypoint x="380" y="378" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="328" y="351" width="39" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gh2ep2_di" bpmnElement="Flow_1gh2ep2">
+        <di:waypoint x="680" y="378" />
+        <di:waypoint x="735" y="378" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1u5eolu_di" bpmnElement="Flow_1u5eolu">
+        <di:waypoint x="785" y="378" />
+        <di:waypoint x="880" y="378" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="823" y="360" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_046xsg5_di" bpmnElement="Flow_046xsg5">
+        <di:waypoint x="760" y="403" />
+        <di:waypoint x="760" y="490" />
+        <di:waypoint x="912" y="490" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="783" y="453" width="14" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14k3te4_di" bpmnElement="Flow_14k3te4">
+        <di:waypoint x="980" y="378" />
+        <di:waypoint x="1052" y="378" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1brq38x_di" bpmnElement="Flow_1brq38x">
+        <di:waypoint x="480" y="270" />
+        <di:waypoint x="552" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18bd6sb_di" bpmnElement="Flow_18bd6sb">
+        <di:waypoint x="480" y="378" />
+        <di:waypoint x="580" y="378" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qp3269_di" bpmnElement="Flow_1qp3269">
+        <di:waypoint x="948" y="490" />
+        <di:waypoint x="1052" y="490" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_06lehem">
+    <bpmndi:BPMNPlane id="BPMNPlane_0dasf4f" bpmnElement="Activity_0zqojnz">
+      <bpmndi:BPMNShape id="Event_0qqeu1b_di" bpmnElement="Event_0qqeu1b">
+        <dc:Bounds x="152" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="148" y="255" width="44" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_138wecf_di" bpmnElement="Event_138wecf">
+        <dc:Bounds x="242" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="224" y="255" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0hc0a3p_di" bpmnElement="DataObjectReference_0hc0a3p">
+        <dc:Bounds x="182" y="85" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="170" y="142" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0ise1x3_di" bpmnElement="DataOutputAssociation_0ise1x3">
+        <di:waypoint x="165" y="213" />
+        <di:waypoint x="130" y="105" />
+        <di:waypoint x="182" y="105" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_04guo50_di" bpmnElement="DataInputAssociation_04guo50">
+        <di:waypoint x="218" y="110" />
+        <di:waypoint x="300" y="110" />
+        <di:waypoint x="266" y="213" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tmuq37_di" bpmnElement="Flow_1tmuq37">
+        <di:waypoint x="188" y="230" />
+        <di:waypoint x="242" y="230" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

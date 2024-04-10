@@ -1,0 +1,184 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.5.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "ffabaac"
+  },
+  "schemaVersion": 16,
+  "id": "Form_vxdjkdv",
+  "components": [
+    {
+      "text": "### Hawk Adoption Form",
+      "type": "text",
+      "id": "Heading_0",
+      "layout": {
+        "row": "row_0",
+        "columns": null
+      }
+    },
+    {
+      "text": "#### Assessment Results ",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_17e60y3",
+        "columns": null
+      },
+      "id": "Field_0t4jksn"
+    },
+    {
+      "values": [
+        {
+          "label": "No",
+          "value": "no"
+        },
+        {
+          "label": "Yes",
+          "value": "yes"
+        }
+      ],
+      "label": "Are they Approved to Adopt",
+      "type": "select",
+      "layout": {
+        "row": "Row_14n6os0",
+        "columns": null
+      },
+      "id": "Field_0440q0g",
+      "key": "adoptionApproved",
+      "defaultValue": "yes"
+    },
+    {
+      "label": "Reason for Rejection",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1pq6ydf",
+        "columns": null
+      },
+      "id": "Field_02n67ox",
+      "key": "rejectReason",
+      "conditional": {
+        "hide": "=adoptionApproved = \"yes\""
+      }
+    },
+    {
+      "label": "Separator",
+      "type": "separator",
+      "layout": {
+        "row": "Row_0uf4cb4",
+        "columns": null
+      },
+      "id": "Field_127subs"
+    },
+    {
+      "text": "##### Applicant Information",
+      "type": "text",
+      "id": "Subheading_1",
+      "layout": {
+        "row": "row_1",
+        "columns": null
+      }
+    },
+    {
+      "type": "textfield",
+      "id": "Textfield_2",
+      "label": "Full Name",
+      "validate": {
+        "minLength": 3,
+        "required": true
+      },
+      "key": "fullName",
+      "layout": {
+        "row": "row_2",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "type": "textfield",
+      "id": "Textfield_3",
+      "label": "Email",
+      "validate": {
+        "minLength": 5,
+        "maxLength": 50,
+        "required": true
+      },
+      "key": "email",
+      "layout": {
+        "row": "row_2",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "type": "textarea",
+      "id": "Textarea_4",
+      "label": "Reasons for being a great hawk owner",
+      "validate": {
+        "minLength": 10,
+        "maxLength": 300,
+        "required": true
+      },
+      "key": "reasonsForAdoption",
+      "layout": {
+        "row": "row_3",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "text": "##### Hawk Adoption Details",
+      "type": "text",
+      "id": "Subheading_5",
+      "layout": {
+        "row": "row_4",
+        "columns": null
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "Checkbox_6",
+      "label": "I am part of the hawk adoption slack channel",
+      "defaultValue": false,
+      "validate": {
+        "required": false
+      },
+      "key": "isPartOfAdoptionChannel",
+      "layout": {
+        "row": "row_5",
+        "columns": null
+      },
+      "readonly": true
+    },
+    {
+      "values": [
+        {
+          "value": "beginner",
+          "label": "Beginner"
+        },
+        {
+          "value": "intermediate",
+          "label": "Intermediate"
+        },
+        {
+          "value": "advanced",
+          "label": "Advanced"
+        }
+      ],
+      "type": "radio",
+      "id": "Radio_7",
+      "label": "Experience level with birds",
+      "key": "experienceLevel",
+      "layout": {
+        "row": "row_5",
+        "columns": null
+      },
+      "validate": {
+        "required": true
+      },
+      "readonly": true
+    }
+  ],
+  "generated": true,
+  "type": "default"
+}
